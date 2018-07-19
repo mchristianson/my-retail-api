@@ -20,6 +20,7 @@ class ProductController {
         respond productService.get(id)
     }
 
+    //TODO this really should be protected
     def update(String id) {
         try {
             Double price = params.price as Double
@@ -34,6 +35,7 @@ class ProductController {
         }
     }
 
+    // Mock data for the my-retain-client app
     def sample(String id) {
         String fileName = "item-data-${id}.json"
         def resource = grailsResourceLocator.findResourceForURI("/${fileName}")
