@@ -1,0 +1,12 @@
+import api.Product
+
+model {
+    Product product
+}
+
+json {
+    id product.id
+    name product.name
+    currentPrice product.currentPrice
+    currencyCode product.currencyCode
+}

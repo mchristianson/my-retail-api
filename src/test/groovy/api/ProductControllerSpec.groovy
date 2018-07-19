@@ -17,7 +17,7 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
     void "product should be found"() {
         given:"product"
         String id = '1'
-        Product product = new Product(id: id)
+        Product product = new Product(id: id, name: 'Big Lebowski', currentPrice: 12.99)
 
         when:"show the product"
         controller.show(id)
@@ -25,7 +25,7 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
         then:"product is available"
         1 * productService.get(id) >> product
         0 * _
-        assert product
+        response.text == '{"id":"1","name":"Big Lebowski","currentPrice":12.99,"currencyCode":"USD"}'
     }
 
     void "product should render 404 if product not found"() {
@@ -55,5 +55,48 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
         1 * productService.updatePrice(productId, price)
         0 * _
         response.status == 202
+    }
+
+    void "should return 400 - bad request if no price"() {
+        given:"product id"
+        String productId = '123'
+
+        when:"show the product"
+        request.method = 'PUT'
+        controller.update(productId)
+
+        then:"product is not found"
+        0 * _
+        response.status == 400
+    }
+
+    void "should show 400 - bad request if price not number"() {
+        given:"product id"
+        String productId = '123'
+        String price = 'notanumber'
+
+        when:"show the product"
+        request.method = 'PUT'
+        params['price'] = price
+        controller.update(productId)
+
+        then:"product is not found"
+        0 * _
+        response.status == 400
+    }
+
+    void "GET method not allowed for update price"() {
+        given:"product id"
+        String productId = '123'
+        String price = 'notanumber'
+
+        when:"show the product"
+        request.method = 'GET'
+        params['price'] = price
+        controller.update(productId)
+
+        then:"product is not found"
+        0 * _
+        response.status == 405
     }
 }

@@ -111,3 +111,5 @@ environments:
         grails:
             redis:
                 host: ${REDIS_HOST}
+redsky:
+    url: https://redsky.target.com/v2/

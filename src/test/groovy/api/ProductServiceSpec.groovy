@@ -24,7 +24,7 @@ class ProductServiceSpec extends Specification implements ServiceUnitTest<Produc
         given:"product id and price"
         Double price = 12.33
         String productId = '123'
-        Product returnedProduct = new Product(id: productId, currentPrice: price)
+        Product returnedProduct = new Product(id: productId, currentPrice: 14.99)
 
         when:"product is retrived"
         Product product = service.get(productId)
@@ -32,6 +32,23 @@ class ProductServiceSpec extends Specification implements ServiceUnitTest<Produc
         then:"values are combined"
         1 * redskyService.getProductDetails(productId) >> returnedProduct
         1 * redisService.getProperty("product:${productId}:price") >> price
+        0 * _
+        product.currentPrice == price
+        product.id == productId
+    }
+
+    void "use price from product service if not available in redis"() {
+        given:"product id and price"
+        Double price = 12.33
+        String productId = '123'
+        Product returnedProduct = new Product(id: productId, currentPrice: price)
+
+        when:"product is retrived"
+        Product product = service.get(productId)
+
+        then:"values are combined"
+        1 * redskyService.getProductDetails(productId) >> returnedProduct
+        1 * redisService.getProperty("product:${productId}:price") >> null
         0 * _
         product.currentPrice == price
         product.id == productId
