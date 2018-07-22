@@ -26,12 +26,14 @@ class ProductController {
             Double price = params.price as Double
             if (price) {
                 productService.updatePrice(id, price)
-                render status: HttpStatus.ACCEPTED, message: 'Price updated.'
+                response.status = HttpStatus.OK.value()
             } else {
-                render status: HttpStatus.BAD_REQUEST, message: 'Price is required.'
+                response.status = HttpStatus.BAD_REQUEST.value()
+                render 'Price is required.'
             }
         } catch (NumberFormatException e) {
-            render status: HttpStatus.BAD_REQUEST, message: 'Price must be a number.'
+            response.status = HttpStatus.BAD_REQUEST.value()
+            render 'Price must be a number.'
         }
     }
 

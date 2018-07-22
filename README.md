@@ -30,19 +30,19 @@ For more information see the [medium.com article](https://medium.com/@petehousto
 #### Manual Testing Locally
 Retrieve product information
 
-`> curl -X GET http://localhost:8080/api/v1/product/13860428`
+`> curl -i -X GET "http://localhost:8080/api/v1/product/13860428"`
 
 
 Attempt to retrieve product information Not Found
 
-`> curl -X GET http://localhost:8080/api/v1/product/13860429`
+`> curl -i -X GET "http://localhost:8080/api/v1/product/13860429"`
 
 Set price for product
 
-`> curl -X PUT http://localhost:8080/api/v1/product/13860428?price=12.22`
+`> curl -i -X PUT "http://localhost:8080/api/v1/product/13860428?price=12.22"`
 
 
 #### Manual Testing AWS EBS Instance
 The applicaiton has been deployed to AWS ElasticBeanstalk:
 
-`> curl -X GET http://my-retail.us-east-2.elasticbeanstalk.com/api/v1/product/13860428`
+`> curl -i -X GET "http://my-retail.us-east-2.elasticbeanstalk.com/api/v1/product/13860428"`

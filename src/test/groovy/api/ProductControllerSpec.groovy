@@ -46,7 +46,7 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
         String productId = '123'
         Double price = 12.33
 
-        when:"show the product"
+        when:"update the price"
         request.method = 'PUT'
         params['price'] = price
         controller.update(productId)
@@ -54,18 +54,18 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
         then:"product is not found"
         1 * productService.updatePrice(productId, price)
         0 * _
-        response.status == 202
+        response.status == 200
     }
 
     void "should return 400 - bad request if no price"() {
         given:"product id"
         String productId = '123'
 
-        when:"show the product"
+        when:"update the price"
         request.method = 'PUT'
         controller.update(productId)
 
-        then:"product is not found"
+        then:"error is caught"
         0 * _
         response.status == 400
     }
@@ -75,12 +75,12 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
         String productId = '123'
         String price = 'notanumber'
 
-        when:"show the product"
+        when:"update the price"
         request.method = 'PUT'
         params['price'] = price
         controller.update(productId)
 
-        then:"product is not found"
+        then:"error is caught"
         0 * _
         response.status == 400
     }
@@ -88,14 +88,14 @@ class ProductControllerSpec extends Specification implements ControllerUnitTest<
     void "GET method not allowed for update price"() {
         given:"product id"
         String productId = '123'
-        String price = 'notanumber'
+        String price = '12.22'
 
-        when:"show the product"
+        when:"update the price"
         request.method = 'GET'
         params['price'] = price
         controller.update(productId)
 
-        then:"product is not found"
+        then:"method is not allowed"
         0 * _
         response.status == 405
     }
